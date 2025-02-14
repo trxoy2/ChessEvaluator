@@ -21,9 +21,9 @@ I chose an ELT approach because it allows us to maintain raw data, which is cruc
 - Python 3.8+
 - Git Bash
 
-The bash scirpt will install the libraries required for the pipeline to run.
+The bash scirpt will install the python libraries required for the pipeline to run.
 
-To run the pipeline:
+**To run the pipeline:**
 Open Git Bash terminal
 Navigate to the project directory: /BluebeamCodeProject
 Start the job by running this command: bash run.sh
