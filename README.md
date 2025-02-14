@@ -25,8 +25,8 @@ The bash scirpt will install the python libraries required for the pipeline to r
 
 **To run the pipeline:**  
 - Open Git Bash terminal  
-- Navigate to the project directory: /BluebeamCodeProject  
-- Start the job by running this command: bash run.sh  
+- Navigate to the project directory:        /BluebeamCodeProject  
+- Start the job by running this command:    bash run.sh  
 
 ## Workflow Diagram
 ![alt text](diagrams/BluebeamProjectDiagram.jpeg)
