@@ -10,17 +10,23 @@ def execute_sql_file(database, sql_file, message=""):
         conn = sqlite3.connect(database)
         cursor = conn.cursor()
 
-        # Execute the SQL script
-        cursor.executescript(sql_script)
+        # Split script into individual queries by semicolons
+        queries = sql_script.strip().split(";")
 
-        #read sql into a df if is it a select query
-        if sql_script.lower().startswith(("select", "pragma")):
-            df = pd.read_sql_query(sql_script, conn)
+        if message:
             print(message)
-            if not df.empty:
-                print(df)
+
+        for query in queries:
+            query = query.strip()
+            if not query:  # Skip empty queries
+                continue
+
+            if query.lower().startswith(("select", "pragma")):
+                # Only execute once via read_sql_query (no cursor.execute)
+                df = pd.read_sql_query(query, conn)
+                print(df if not df.empty else "No results found.")
             else:
-                print("No results found.")
+                cursor.execute(query)  # Execute non-SELECT queries
 
         conn.commit()
         conn.close()
@@ -45,7 +51,6 @@ if __name__ == "__main__":
     );
 
     INSERT INTO test_table (name) VALUES ('Alice'), ('Bob');
-    SELECT * FROM test_table;
     """
     test_sql_select_content = """SELECT * FROM test_table;
     """

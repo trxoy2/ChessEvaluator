@@ -5,7 +5,7 @@ set -o pipefail  # Catch errors in piped commands
 
 install_dependencies() {
     if [[ -f "requirements.txt" ]]; then
-        echo "--------Installing dependencies..."
+        echo "----------------Installing dependencies..."
         pip install -r requirements.txt -q
     fi
 }
@@ -14,7 +14,7 @@ run_step() {
     local step_name=$1
     local script_path=$2
 
-    echo "--------Running $step_name..."
+    echo "----------------Running $step_name..."
     python -u "$script_path"
 
     if [ $? -ne 0 ]; then
