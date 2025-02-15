@@ -52,6 +52,8 @@ To ensure modules work correctly, I tested using:
 ### **Python Libraries**  
 - **pandas** – For handling CSV data and performing transformations.  
 - **tldextract** – For extracting domains and top-level domains (TLDs).  
+- **urllib3** - For extracting domains
+- **python-whois** - For looking up domain owners
 - **sqlite3** – For loading and storing data in a database.  
 
 ### **Database**  
