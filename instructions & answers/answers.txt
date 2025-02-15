@@ -1,0 +1,59 @@
+1. How many times does the letter E appear in the domain name?
+        I added the count of E for each domain in a new column using python.
+
+2. How many records that contain the letter A and the letter T in the domain name are considered to be malware & phishing?
+        56
+
+3. Output how many domains are in each type
+    I used SQL to query the database table.
+    |    | type       |   domain_count |
+    +====+============+================+
+    |  0 | benign     |           1098 |
+    +----+------------+----------------+
+    |  1 | defacement |            280 |
+    +----+------------+----------------+
+    |  2 | phishing   |             76 |
+    +----+------------+----------------+
+    |  3 | malware    |             41 |
+    +----+------------+----------------+
+
+4. What percentage of each is the total table population? For example, phishing accounts for 20 % of types in the file.
+    I used SQL to query the database table.
+    +----+------------+----------------+--------------+
+    |    | type       |   domain_count |   percentage |
+    +====+============+================+==============+
+    |  0 | benign     |           1098 |        73.4  |
+    +----+------------+----------------+--------------+
+    |  1 | defacement |            280 |        18.72 |
+    +----+------------+----------------+--------------+
+    |  2 | phishing   |             76 |         5.08 |
+    +----+------------+----------------+--------------+
+    |  3 | malware    |             41 |         2.74 |
+    +----+------------+----------------+--------------+
+
+5. Rank and order each record based on the following scale
+    I added a new rank column (1-4) to the table to represent the severity level. 
+    Then I used SQL to show the severity level based on the rank column.
+    +----+---------------------------+---------+------------+
+    |    | domain                    | type    | Severity   |
+    +====+===========================+=========+============+
+    |  0 | zoetekroon.nl             | malware | High       |
+    +----+---------------------------+---------+------------+
+    |  1 | xo3fhvm5lcvzy92q.download | malware | High       |
+    +----+---------------------------+---------+------------+
+    |  2 | www.wu8188.com            | malware | High       |
+    +----+---------------------------+---------+------------+
+    |  3 | www.vilagnomad.com        | malware | High       |
+    +----+---------------------------+---------+------------+
+    |  4 | www.newstudy.net          | malware | High       |
+    +----+---------------------------+---------+------------+
+    |  5 | www.easycaptchas.com      | malware | High       |
+    +----+---------------------------+---------+------------+
+    |  6 | www.bhxx.net              | malware | High       |
+    +----+---------------------------+---------+------------+
+    |  7 | www.824555.com            | malware | High       |
+    +----+---------------------------+---------+------------+
+    |  8 | www.711100.com            | malware | High       |
+    +----+---------------------------+---------+------------+
+    |  9 | www.0068555.com           | malware | High       |
+    +----+---------------------------+---------+------------+

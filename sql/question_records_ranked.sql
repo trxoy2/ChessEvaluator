@@ -22,5 +22,5 @@ SELECT
         ELSE 'Unknown'  
     END AS Severity
 FROM url_transform
-ORDER BY rank DESC, domain ASC
+ORDER BY rank DESC, domain DESC
 LIMIT 10;

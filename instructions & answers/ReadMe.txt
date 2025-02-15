@@ -8,8 +8,8 @@ Utilizing Python and SQL, your challenge is to process the malicious urls csv fi
 5. How many records that contain the letter A and the letter T in the domain name are considered to be malware & phishing✅ 
 ---SQL 
 6. Output how many domains are in each type✅ 
-7. What percentage of each is the total table population? For example, phishing accounts for 20 % of types in the file.
-8. Rank and order each record based on the following scale
+7. What percentage of each is the total table population? For example, phishing accounts for 20 % of types in the file.✅ 
+8. Rank and order each record based on the following scale✅ 
 	a. Malware  = High 
 	b. Defacement = Medium High	
 	c. Phishing = Medium
