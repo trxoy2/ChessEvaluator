@@ -1,20 +1,24 @@
 import sqlite3
 import pandas as pd
 import os
+from tabulate import tabulate
 
 def execute_sql_file(database, sql_file, message=""):
+
+    if not os.path.exists(sql_file):
+        raise FileNotFoundError(f"SQL file not found: {sql_file}")
+
     try:
-        with open(sql_file, "r") as file:
+        with open(sql_file, "r", encoding="utf-8") as file:
             sql_script = file.read()
 
         conn = sqlite3.connect(database)
         cursor = conn.cursor()
 
-        # Split script into individual queries by semicolons
-        queries = sql_script.strip().split(";")
+        queries = sql_script.strip().split(";")  # Split SQL script into individual queries
 
         if message:
-            print(message)
+            print(f"\n🔹 {message}\n")
 
         for query in queries:
             query = query.strip()
@@ -22,9 +26,12 @@ def execute_sql_file(database, sql_file, message=""):
                 continue
 
             if query.lower().startswith(("select", "pragma")):
-                # Only execute once via read_sql_query (no cursor.execute)
                 df = pd.read_sql_query(query, conn)
-                print(df if not df.empty else "No results found.")
+
+                if df.empty:
+                    print("No results found.")
+                else:
+                    print(tabulate(df, headers="keys", tablefmt="grid"))  # Pretty print table
             else:
                 cursor.execute(query)  # Execute non-SELECT queries
 

@@ -11,14 +11,18 @@ def clean_and_validate_data(df):
     # Record initial row count
     initial_rows = len(df)
     
+    # Fill nulls in 'url'
+    df["url"] = df["url"].fillna("")
+    df["url"] = df["url"].replace(r"^\s*$", None, regex=True)
     # Drop rows where 'url' is null
     df = df.dropna(subset=["url"])
+    df = df[df["url"] != ""] 
 
     # Fill missing 'type' values with 'null'
     df["type"] = df["type"].where(pd.notna(df["type"]), None)
 
     # Normalize 'type' column (lowercase, strip whitespace)
-    #df["type"] = df["type"].str.lower().str.strip()
+    df["type"] = df["type"].str.lower().str.strip()
 
     # Print URLs where type is 'null'
     null_type_urls = df[df["type"].isna()]["url"].tolist()

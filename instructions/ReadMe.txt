@@ -1,13 +1,13 @@
 ## Challenge:
 Utilizing Python and SQL, your challenge is to process the malicious urls csv file, keeping the original input and producing certain outputs:
 --Python
-1. Parse the domain into a new column
-2. Parse the top-level domain into a new column
-3. Retrieve and write who owns the domain
-4. How many times does the letter E appear in the domain name  
-5. How many records that contain the letter A and the letter T in the domain name are considered to be malware & phishing
+1. Parse the domain into a new column✅
+2. Parse the top-level domain into a new column✅
+3. Retrieve and write who owns the domain✅
+4. How many times does the letter E appear in the domain name✅ 
+5. How many records that contain the letter A and the letter T in the domain name are considered to be malware & phishing✅ 
 ---SQL 
-6. Output how many domains are in each type
+6. Output how many domains are in each type✅ 
 7. What percentage of each is the total table population? For example, phishing accounts for 20 % of types in the file.
 8. Rank and order each record based on the following scale
 	a. Malware  = High 

@@ -6,7 +6,7 @@ set -o pipefail  # Catch errors in piped commands
 install_dependencies() {
     if [[ -f "requirements.txt" ]]; then
         echo "----------------Installing dependencies..."
-        pip install -r requirements.txt -q
+        pip install -r requirements.txt --no-warn-script-location
     fi
 }
 
@@ -28,7 +28,7 @@ main() {
     
     run_step "Extract_Load" "./src/extract_load.py"
     run_step "Transform" "./src/transform.py"
-    run_step "SQL Queries" "./src/run_queries.py"
+    run_step "Queries" "./src/run_queries.py"
 
     echo "ELT Pipeline completed successfully."
 }

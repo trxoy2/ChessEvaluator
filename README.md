@@ -8,7 +8,7 @@ This project focuses on building an **ELT (Extract, Load, Transform) pipeline** 
 - **Load**: Stores the raw data in a structured database while maintaining data integrity. The raw data is then cleaned and validated for use in transformations.
 - **Transform**: Applies various transformations, including parsing domains, extracting top-level domains (TLDs), counting character occurrences, filtering malicious records, and ranking domains based on severity.
 
-## Highlights
+## Highlights ✨
 
 I used a bash script to act as the orchestration tool for this project. In a larger scale project I would use a tool like Airflow or Databricks Workflows.
 
@@ -31,7 +31,7 @@ The bash scirpt will install the python libraries required for the pipeline to r
 ## Workflow Diagram
 ![alt text](diagrams/BluebeamProjectDiagram.jpeg)
 
-## Testing
+## Testing 🧪
 To ensure modules work correctly, I tested using:
 1. **Direct Testing in the Module (`if __name__ == "__main__"`)**  
    - Each module includes a test block that allows it to be run directly for quick verification.
