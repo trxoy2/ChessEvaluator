@@ -23,4 +23,4 @@ SELECT
     END AS Severity
 FROM url_transform
 ORDER BY rank DESC, domain DESC
-LIMIT 10;
+LIMIT 5;
