@@ -6,7 +6,8 @@ This project focuses on building an **ELT (Extract, Load, Transform) pipeline** 
 
 - **Extract**: Ingests the raw CSV file into the system.  
 - **Load**: Stores the raw data in a structured database while maintaining data integrity. The raw data is then cleaned and validated for use in transformations.
-- **Transform**: Applies various transformations, including parsing domains, extracting top-level domains (TLDs), counting character occurrences, filtering malicious records, and ranking domains based on severity.
+- **Transform**: Applies various transformations, including parsing domains, extracting top-level domains (TLDs), counting character occurrences, and ranking domains based on severity.
+
 
 ## Highlights ✨
 
@@ -19,14 +20,16 @@ I chose an ELT approach because it allows us to maintain raw data, which is cruc
 ## Setup & running the pipeline
 ### Prerequisites
 - Python 3.8+
-- Git Bash
+- pip
+- Git Bash (Windows)
 
 The bash scirpt will install the python libraries required for the pipeline to run.
 
-**To run the pipeline:**  
+**To run the pipeline(Windows):** 
 - Open Git Bash terminal  
 - Navigate to the project directory:        `/BluebeamCodeProject` 
 - Start the job by running this command:    `bash run.sh`
+
 
 ## Workflow Diagram
 ![alt text](diagrams/BluebeamProjectDiagram.jpeg)
