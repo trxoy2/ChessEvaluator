@@ -14,4 +14,4 @@ execute_sql_file(db_path, "./sql/schema_url_raw.sql")
 insert_df(db_path, "url_raw", raw_url_df, if_exists="replace")
 
 #print raw data sample
-execute_sql_file(db_path, "./sql/select_url_raw.sql", message="\n✅ Raw URL table uploaded to database:")
+execute_sql_file(db_path, "./sql/select_url_raw.sql", message="Raw URL table uploaded to database:")

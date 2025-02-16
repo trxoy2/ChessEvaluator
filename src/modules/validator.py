@@ -2,7 +2,7 @@ import pandas as pd
 
 def clean_and_validate_data(df):
     
-    print("\n🧹 Cleaning and validating data...")
+    print("Cleaning and validating data...")
 
     # Raise an error if the input DataFrame is empty
     if df.empty:

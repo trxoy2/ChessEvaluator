@@ -37,7 +37,7 @@ execute_sql_file(db_path, "./sql/schema_url_clean.sql")
 insert_df(db_path, "url_clean", clean_url_df, if_exists="replace")
 
 #show clean url data
-execute_sql_file(db_path, "./sql/select_url_clean.sql", message="\n✅ Cleaned and Validated URL table uploaded to db:")
+execute_sql_file(db_path, "./sql/select_url_clean.sql", message="Cleaned and Validated URL table uploaded to db:")
 
 
 #---------------------------------
@@ -91,4 +91,4 @@ execute_sql_file(db_path, "./sql/schema_url_transform.sql")
 
 insert_df(db_path, "url_transform", transformed_url_df, if_exists="replace")
 
-execute_sql_file(db_path, "./sql/select_url_transform.sql", message="\n✅ Transformed URL table uploaded to db:")
+execute_sql_file(db_path, "./sql/select_url_transform.sql", message="Transformed URL table uploaded to db:")
