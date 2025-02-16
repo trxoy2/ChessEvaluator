@@ -33,7 +33,7 @@ if __name__ == "__main__":
     result_df = pd.read_sql_query(f"SELECT * FROM {TEST_TABLE};", conn)
     conn.close()
 
-    print("\n✅ Test Table Data:")
+    print("Test Table Data:")
     print(result_df)
 
     os.remove(TEST_DB)
