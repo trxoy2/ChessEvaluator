@@ -18,7 +18,7 @@ def execute_sql_file(database, sql_file, message=""):
         queries = sql_script.strip().split(";")  # Split SQL script into individual queries
 
         if message:
-            print(f"\n🔹 {message}\n")
+            print(f"{message}")
 
         for query in queries:
             query = query.strip()
