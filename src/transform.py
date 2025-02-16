@@ -28,7 +28,9 @@ raw_url_df = pd.read_sql_query("SELECT * FROM url_raw;", conn)
 # Close the database connection
 conn.close()
 
+print("\n============================")
 clean_url_df = clean_and_validate_data(raw_url_df)
+print("============================\n")
 
 #execute sql to create url_clean table with defined schema file
 execute_sql_file(db_path, "./sql/schema_url_clean.sql")
@@ -69,6 +71,7 @@ transformed_url_df["is_valid_url"] = transformed_url_df["url"].apply(lambda x: b
 #---------------------------------
 #---------------------------------Transform the data by extracting domain, tld, and domain owners
 #---------------------------------
+print("\n============================")
 print("Extracting domains...")
 #apply extract_domain function to create a new column
 transformed_url_df["domain"] = transformed_url_df["url"].apply(extract_domain)
@@ -80,12 +83,15 @@ print("Finding domain owners...")
 transformed_url_df = get_domain_owner_parallel(transformed_url_df, "domain")
 #How many times does letter E appear in each domain?
 transformed_url_df["e_count"] = transformed_url_df["domain"].str.lower().str.count("e")
+print("============================\n")
 
 #---------------------------------
 #---------------------------------Clean and Validate data again before saving final transformed table
 #---------------------------------
 
+print("\n============================")
 transformed_url_df = clean_and_validate_data(transformed_url_df)
+print("============================\n")
 
 execute_sql_file(db_path, "./sql/schema_url_transform.sql")
 
