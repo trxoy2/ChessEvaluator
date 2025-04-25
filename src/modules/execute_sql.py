@@ -1,24 +1,3 @@
-"""
-This script executes an SQL file against a SQLite database.
-
-It performs the following steps:
-1. Checks if the specified SQL file exists.
-2. Reads the SQL script from the file.
-3. Connects to the specified SQLite database.
-4. Splits the script into individual SQL queries and executes them.
-   - SELECT and PRAGMA queries are executed and displayed as formatted tables.
-   - Other queries (INSERT, UPDATE, DELETE, etc.) are executed normally.
-5. Commits changes (if any) and closes the database connection.
-
-Error handling is included to catch issues such as missing SQL files or execution errors.
-
-Dependencies:
-- sqlite3 (built-in)
-- pandas (for handling query results)
-- tabulate (for formatted table display)
-- os (for file existence check)
-"""
-
 import sqlite3
 import pandas as pd
 import os

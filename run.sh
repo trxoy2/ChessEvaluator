@@ -34,27 +34,3 @@ main() {
 }
 
 main "$@"
-
-
-
-# This Bash script automates the execution of an ELT (Extract, Load, Transform) pipeline.
-# It ensures that dependencies are installed, executes each step in sequence, and handles errors gracefully.
-#
-# 1. **Dependency Installation**: 
-#    - If a `requirements.txt` file exists, it installs the necessary Python packages.
-#
-# 2. **Pipeline Execution**: 
-#    - Runs each step of the ELT process in order:
-#      - `extract_load.py`: Extracts data from a CSV and loads it into a database.
-#      - `transform.py`: Cleans, validates, and enriches the data.
-#      - `run_queries.py`: Executes analytical queries on the transformed data.
-#
-# 3. **Error Handling**: 
-#    - The script stops execution if any step fails, preventing further processing of potentially invalid data.
-#    - The `set -e` flag ensures that the script exits immediately on any error.
-#    - The `set -o pipefail` flag ensures errors in piped commands are caught.
-#
-# 4. **Logging**:
-#    - Provides clear console messages to indicate progress and failures.
-#
-# Once all steps complete successfully, a message confirms the pipeline's success.
