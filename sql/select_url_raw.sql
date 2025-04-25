@@ -1,3 +1,0 @@
-SELECT *
-FROM url_raw
-LIMIT 3;

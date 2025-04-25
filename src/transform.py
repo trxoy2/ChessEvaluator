@@ -1,100 +1,78 @@
 import pandas as pd
 import sqlite3
-import re
-import logging
-import colorama
-from urllib.parse import urlparse
+from tqdm import tqdm
 from modules.execute_sql import execute_sql_file
 from modules.insert_dataframe import insert_df
-from modules.validator import clean_and_validate_data
-from modules.parse_urls import extract_domain, extract_tld, get_domain_owner, get_domain_owner_parallel
+from modules.evaluate_fen import evaluate_fen_full
+from modules.pgn_to_fen import pgn_to_fens_df
 
-colorama.init() 
-# Suppress WHOIS library logging
-logging.getLogger("whois").setLevel(logging.CRITICAL)
+db_path = "./data/chess.db"
 
-# Path to your SQLite database
-db_path = "./data/malicious_urls.db"
-
-#---------------------------------
-#---------------------------------Clean and Validate data 
-#---------------------------------
-# Connect to the database
+# Connect to the database and load df
 conn = sqlite3.connect(db_path)
 
-# Read the url_raw table into a DataFrame
-raw_url_df = pd.read_sql_query("SELECT * FROM url_raw;", conn)
+df = pd.read_sql_query("SELECT * FROM chess_raw;", conn)
 
-# Close the database connection
 conn.close()
 
-print("\n============================")
-clean_url_df = clean_and_validate_data(raw_url_df)
-print("============================\n")
-
-#execute sql to create url_clean table with defined schema file
-execute_sql_file(db_path, "./sql/schema_url_clean.sql")
-
-#load the df with raw data into url_raw table
-insert_df(db_path, "url_clean", clean_url_df, if_exists="replace")
-
-#show clean url data
-execute_sql_file(db_path, "./sql/select_url_clean.sql", message="Cleaned and Validated URL table uploaded to db:")
-
-
 #---------------------------------
-#---------------------------------Transform the data by adding new columns to enrich data
+#---------Convert PGNs to FENs----
 #---------------------------------
-#connect to the database
-conn = sqlite3.connect(db_path)
 
-#read the url_raw table into a DataFrame
-transformed_url_df = pd.read_sql_query("SELECT * FROM url_clean;", conn)
+# Apply to all PGNs
+all_fens = []
 
-#close the database connection
-conn.close()
+for idx, row in df.iterrows():
+    pgn = row['pgn']
+    game_id = row.get('uuid', idx) 
+    fens_df = pgn_to_fens_df(pgn, game_id)
+    all_fens.append(fens_df)
 
-#add column that identifies if url is duplicate
-transformed_url_df["conflicting_url"] = transformed_url_df.groupby("url")["type"].transform("nunique") > 1
+fens_df = pd.concat(all_fens, ignore_index=True)
 
-#regex to validate
-URL_REGEX = re.compile(
-    r"^((https?|ftp|htp):\/\/)?"  # Allow common & mistyped schemes
-    r"(([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}|"  # Domain name (e.g., example.com)
-    r"localhost|"  # Localhost
-    r"(\d{1,3}\.){3}\d{1,3})"  # OR IP address (e.g., 192.168.1.1)
-    r"(:\d+)?(\/[^\s]*)?$"  # Optional port & path
+#print(fens_df.head(5))
+
+#-----------------------------------
+#------Evaluate FENs w Stockfish----
+#-----------------------------------
+
+# Enable tqdm for pandas
+tqdm.pandas(desc="Evaluating FENs")
+
+# Apply evaluation function with progress bar
+fens_df[['score', 'mate_in', 'best_move']] = fens_df['fen'].progress_apply(
+    lambda fen: pd.Series(evaluate_fen_full(fen))
 )
-#validate URLs using regex
-transformed_url_df["is_valid_url"] = transformed_url_df["url"].apply(lambda x: bool(URL_REGEX.match(str(x))) if x else False)
 
-#---------------------------------
-#---------------------------------Transform the data by extracting domain, tld, and domain owners
-#---------------------------------
-print("\n============================")
-print("Extracting domains...")
-#apply extract_domain function to create a new column
-transformed_url_df["domain"] = transformed_url_df["url"].apply(extract_domain)
-print("Extracting top level domains...")
-#apply extract_tld function to create a new column
-transformed_url_df["tld"] = transformed_url_df["domain"].apply(extract_tld)
-print("Finding domain owners...")
-#apply get_domain_owner using WHOIS lookup and store the owner in a new column
-transformed_url_df = get_domain_owner_parallel(transformed_url_df, "domain")
-#How many times does letter E appear in each domain?
-transformed_url_df["e_count"] = transformed_url_df["domain"].str.lower().str.count("e")
-print("============================\n")
+# Preview with evaluations
+print(fens_df[['game_id', 'move_number', 'player_to_move', 'score', 'mate_in', 'best_move']].head())
 
-#---------------------------------
-#---------------------------------Clean and Validate data again before saving final transformed table
-#---------------------------------
 
-print("\n============================")
-transformed_url_df = clean_and_validate_data(transformed_url_df)
-print("============================\n")
 
-execute_sql_file(db_path, "./sql/schema_url_transform.sql")
+#execute sql to create table
+execute_sql_file(db_path, "./sql/schema_chess_fens.sql")
 
-insert_df(db_path, "url_transform", transformed_url_df, if_exists="replace")
+#load the df with raw data
+insert_df(db_path, "chess_fens_evaluated", fens_df, if_exists="replace")
 
-execute_sql_file(db_path, "./sql/select_url_transform.sql", message="Transformed URL table uploaded to db:")
+
+
+#import matplotlib.pyplot as plt
+#
+## Function to plot a game's scores
+#def plot_game_scores(fens_df, game_id):
+#    game_data = fens_df[fens_df['game_id'] == game_id].copy()
+#    game_data = game_data.dropna(subset=['score'])  # Drop moves without evaluation
+#
+#    plt.figure(figsize=(12, 6))
+#    plt.plot(game_data['move_number'], game_data['score'], marker='o', linestyle='-')
+#    plt.axhline(0, color='gray', linestyle='--', linewidth=1)
+#    plt.title(f"Evaluation Score Over Time (Game ID: {game_id})")
+#    plt.xlabel("Move Number")
+#    plt.ylabel("Evaluation (Centipawns)")
+#    plt.grid(True)
+#    plt.tight_layout()
+#    plt.show()
+#
+## Example usage (replace with an actual game_id from your data)
+#plot_game_scores(fens_df, '152bb2ac-fe18-11ef-9793-f95eb901000f')
