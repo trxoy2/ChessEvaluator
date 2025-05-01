@@ -1,10 +1,5 @@
 import pandas as pd
-import sqlite3
 import requests
-import json
-import re
-import chess.pgn
-import io
 from modules.execute_sql import execute_sql_file
 from modules.insert_dataframe import insert_df
 
@@ -38,7 +33,7 @@ def get_all_games(username, limit=None):
     return all_games
 
 # Fetch games and convert to DataFrame
-results = get_all_games("HungryHowie3")
+results = get_all_games("HungryHowie4")
 
 df = pd.DataFrame(results)
 

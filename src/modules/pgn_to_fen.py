@@ -10,13 +10,19 @@ def pgn_to_fens_df(pgn_str, game_id):
     move_number = 1
 
     for move in game.mainline_moves():
+        move_uci = move.uci()
+        move_san = board.san(move)
         board.push(move)
+
         fens_data.append({
             'game_id': game_id,
             'move_number': move_number,
             'fen': board.fen(),
-            'player_to_move': 'white' if board.turn else 'black'
+            'player_to_move': 'white' if board.turn else 'black',
+            'actual_move_uci': move_uci,
+            'actual_move_san': move_san
         })
+
         move_number += 1
 
     return pd.DataFrame(fens_data)

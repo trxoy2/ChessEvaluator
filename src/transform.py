@@ -30,8 +30,6 @@ for idx, row in df.iterrows():
 
 fens_df = pd.concat(all_fens, ignore_index=True)
 
-#print(fens_df.head(5))
-
 #-----------------------------------
 #------Evaluate FENs w Stockfish----
 #-----------------------------------
@@ -45,17 +43,37 @@ fens_df[['score', 'mate_in', 'best_move']] = fens_df['fen'].progress_apply(
 )
 
 # Preview with evaluations
-print(fens_df[['game_id', 'move_number', 'player_to_move', 'score', 'mate_in', 'best_move']].head())
+print(fens_df.head())
 
+#-----------------------------------
+#------Load evaluated data----------
+#-----------------------------------
 
-
+print("load evaluated fen data")
 #execute sql to create table
 execute_sql_file(db_path, "./sql/schema_chess_fens.sql")
 
 #load the df with raw data
 insert_df(db_path, "chess_fens_evaluated", fens_df, if_exists="replace")
 
+#-----------------------------------
+#------Calculate move quality-------
+#-----------------------------------
 
+print("calculate move quality")
+#execute sql to calculate if player made the best move
+execute_sql_file(db_path, "./sql/calc_is_best_move.sql")
+#execute sql to calculate move quality
+execute_sql_file(db_path, "./sql/calc_move_quality.sql")
+
+print("show final data")
+conn = sqlite3.connect(db_path)
+
+df = pd.read_sql_query("SELECT * FROM chess_fens_evaluated;", conn)
+
+conn.close()
+
+print(df.head())
 
 #import matplotlib.pyplot as plt
 #
